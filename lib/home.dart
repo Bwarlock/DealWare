@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dealware/main.dart';
+import 'package:dealware/forCheckBox.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -13,7 +14,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<String> store = [
+
+  final List<String> store1 = [
     "2game",
     "AllYouPlay",
     "Amazon",
@@ -54,7 +56,10 @@ class _MyHomePageState extends State<MyHomePage> {
     "Voidu",
     "WinGameStore"
   ];
-  final List<String> gameType = [
+
+  List<ForCheckBox> store = [];
+
+  final List<String> gameType1 = [
     "DLC",
     "Package",
     "Early Access",
@@ -62,18 +67,32 @@ class _MyHomePageState extends State<MyHomePage> {
     "Achievements"
   ];
 
-  Widget getTile(String str) {
+  List<ForCheckBox> gameType = [];
+  var minMax = ForCheckBox(str: [0,999], showvalue: false);
+  var priceCut = ForCheckBox(str: [0,100], showvalue: false);
+  var freeGames = ForCheckBox(str: "Free Games", showvalue: false);
+  @override
+  void initState() {
+    this.store = List<ForCheckBox>.generate(store1.length, (index) => ForCheckBox(str: store1[index], showvalue: false));
+    this.gameType = List<ForCheckBox>.generate(gameType1.length, (index) => ForCheckBox(str: gameType1[index], showvalue: false));
+    super.initState();
+  }
+
+  Widget getTile(ForCheckBox obj) {
     return ListTile(
       contentPadding: const EdgeInsets.fromLTRB(15, 0, 4, 0),
       leading: Text(
-        str,
+        obj.str,
         style: const TextStyle(
           fontSize: 18,
         ),
       ),
       trailing: Checkbox(
-        value: false,
-        onChanged: (isChanged) {},
+        value: obj.showvalue,
+        onChanged: (value) {
+          setState(() {
+            obj.showvalue = value!;
+        });},
       ),
       onTap: () {},
     );
@@ -101,24 +120,28 @@ class _MyHomePageState extends State<MyHomePage> {
                     fontSize: 22,
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, "/settings");
+                },
               ),
             ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.settings),
-                title: const Text(
-                  "Free Games",
-                  style: TextStyle(
-                    fontSize: 22,
-                  ),
+            ListTile(
+              leading: const Icon(Icons.games),
+              title: const Text(
+                "Free Games",
+                style: TextStyle(
+                  fontSize: 22,
                 ),
-                trailing: Checkbox(
-                  value: false,
-                  onChanged: (isChanged) {},
-                ),
-                onTap: () {},
               ),
+              trailing: Checkbox(
+                value: freeGames.showvalue,
+                onChanged: (value) {
+                  setState(() {
+                    freeGames.showvalue = value!;
+                  });
+                },
+              ),
+              onTap: () {},
             ),
             ListTile(
               leading: const Text(
@@ -136,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   fontSize: 22,
                 ),
               ),
-              children: store.map((str) => getTile(str)).toList(),
+              children: store.map((obj) => getTile(obj)).toList(),
             ),
             ExpansionTile(
               title: const Text(
@@ -146,36 +169,45 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    SizedBox(
-                      width: 80,
-                      height: 50,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "min",
-                          filled: true,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 4, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const SizedBox(
+                        width: 80,
+                        height: 50,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "min",
+                            filled: true,
+                          ),
                         ),
                       ),
-                    ),
-                    Text("to"),
-                    SizedBox(
-                      width: 80,
-                      height: 50,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "max",
-                          filled: true,
+                      const Text("to"),
+                      const SizedBox(
+                        width: 80,
+                        height: 50,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "max",
+                            filled: true,
+                          ),
                         ),
                       ),
+                    Checkbox(
+                      value: minMax.showvalue,
+                      onChanged: (value) {
+                        setState(() {
+                          minMax.showvalue = value!;
+                        });},
                     ),
-                    Icon(Icons.add_box),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -187,36 +219,45 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    SizedBox(
-                      width: 80,
-                      height: 50,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "0",
-                          filled: true,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 4, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const SizedBox(
+                        width: 80,
+                        height: 50,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "0",
+                            filled: true,
+                          ),
                         ),
                       ),
-                    ),
-                    Text("to"),
-                    SizedBox(
-                      width: 80,
-                      height: 50,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "100",
-                          filled: true,
+                      const Text("to"),
+                      const SizedBox(
+                        width: 80,
+                        height: 50,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "100",
+                            filled: true,
+                          ),
                         ),
                       ),
-                    ),
-                    Icon(Icons.add_box),
-                  ],
+                      Checkbox(
+                        value: priceCut.showvalue,
+                        onChanged: (value) {
+                          setState(() {
+                            priceCut.showvalue = value!;
+                          });},
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -227,7 +268,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   fontSize: 22,
                 ),
               ),
-              children: gameType.map((str) => getTile(str)).toList(),
+              children: gameType.map((obj) => getTile(obj)).toList(),
+            ),
+            Card(
+              child: ListTile(
+                title: const Center(
+                  child: Text(
+                    "Apply",
+                    style: TextStyle(
+                      fontSize: 22,
+                    ),
+                  ),
+                ),
+                onTap: () {},
+              ),
             ),
           ],
         ),
@@ -236,6 +290,97 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex:2,child: Image.asset("assets/848450.jpg"),),
+                    const SizedBox(width: 6,),
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          Row(
+                            children: const [Expanded(
+                              child: Text("Subnautica: Below Zero",
+                                  overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 18,),
+                              ),
+                            ),],
+                          ),
+                          Row(
+                            children:[
+                              Expanded(flex: 5,child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                Container(
+                                  padding: const EdgeInsets.all(1),
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[600],
+                                  ),
+                                  child: const Center(child: Text("-10%")),
+                                ),
+                                  const SizedBox(height: 3,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(1),
+
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[600],
+                                        ),
+                                        child: const Center(child: Text("dlc")),
+                                      ),
+                                      const SizedBox(width: 3,),
+                                      Container(
+                                        padding: const EdgeInsets.all(1),
+
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[600],
+                                        ),
+                                        child: const Center(child: Text("Steam")),
+                                      ),
+                                    ],
+                                  )
+                              ],)),
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: const [
+                                  Text("\$40.9",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      decoration: TextDecoration.lineThrough,
+                                      decorationThickness: 1.5,
+                                    ),),
+                                  SizedBox(height: 5,),
+                                  Text("\$40.9",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),),
+                                ],),
+                              ),
+
+                            ],
+                          ),
+
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(
               width: 80,
               height: 50,

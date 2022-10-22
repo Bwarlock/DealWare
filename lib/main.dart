@@ -1,3 +1,4 @@
+import 'package:dealware/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:dealware/home.dart';
 
@@ -26,7 +27,12 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(primarySwatch: Colors.blue,),
       darkTheme: ThemeData.dark(), // standard dark theme
       themeMode: _themeMode, // device controls theme
-      home: const MyHomePage(title: 'Dealware'),
+      initialRoute: "/home",
+      routes: {
+        "/home" : (context) => MyHomePage(title: 'Dealware'),
+        "/settings" : (context) => Settings(),
+      },
+      /*home: const MyHomePage(title: 'Dealware'),*/
     );
   }
 

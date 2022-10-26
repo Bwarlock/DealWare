@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dealware/main.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -14,7 +15,35 @@ class _SettingsState extends State<Settings> {
       appBar: AppBar(
         title: const Text("Settings"),
       ),
-      body: const Center(child: Text("This is Settings"),),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Choose your theme:',
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              /// //////////////////////////////////////////////////////
+              /// Change theme & rebuild to show it using these buttons
+              ElevatedButton(
+                  onPressed: () =>
+                      MyApp.of(context).changeTheme(ThemeMode.light),
+                  child: const Text('Light')),
+              ElevatedButton(
+                  onPressed: () =>
+                      MyApp.of(context).changeTheme(ThemeMode.dark),
+                  child: const Text('Dark')),
+              ElevatedButton(
+                  onPressed: () =>
+                      MyApp.of(context).changeTheme(ThemeMode.system),
+                  child: const Text('System')),
+
+              /// //////////////////////////////////////////////////////
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

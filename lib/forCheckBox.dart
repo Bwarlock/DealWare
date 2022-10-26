@@ -1,5 +1,6 @@
 class ForCheckBox {
   var str;
   bool showvalue;
-  ForCheckBox({required this.str,required this.showvalue});
+  var store;
+  ForCheckBox({required this.str,required this.showvalue, this.store});
 }

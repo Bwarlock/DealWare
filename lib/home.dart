@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dealware/main.dart';
 import 'package:dealware/forCheckBox.dart';
+import 'package:dealware/getTheData.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -15,86 +15,131 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  final List<String> store1 = [
-    "2game",
-    "AllYouPlay",
-    "Amazon",
-    "Blizzard",
-    "Direct2Drive",
-    "DLGamer",
-    "Dreamgame",
-    "Epic Game Store",
-    "eTail.Market",
-    "Fanatical",
-    "FireFlower",
-    "Game Jolt",
-    "GameBillet",
-    "GamersGate",
-    "Gamerload",
-    "GamesPlanet DE",
-    "GamesPlanet FR",
-    "GamesPlanet UK",
-    "GamesPlanet US",
-    "GamesRepublic",
-    "GameStop PC",
-    "GOG",
-    "GreenManGaming",
-    "Humble Store",
-    "Humble Widgets",
-    "IndieGala Store",
-    "Itch.io",
-    "JoyBuggy",
-    "MacGamesStore",
-    "Microsoft Store",
-    "Newegg",
-    "Noctre",
-    "Nuuvem",
-    "Origin",
-    "Square Enix",
-    "Steam",
-    "Ubisoft Store",
-    "Voidu",
-    "WinGameStore"
+  final List<ForCheckBox> store = [
+    ForCheckBox(str: "2game", showvalue: true, store: "game2"),
+    ForCheckBox(str: "AllYouPlay", showvalue: true, store: "allyouplay"),
+    ForCheckBox(str: "Amazon", showvalue: true, store: "amazonus"),
+    ForCheckBox(str: "Blizzard", showvalue: true, store: "battlenet"),
+    ForCheckBox(str: "Direct2Drive", showvalue: true, store: "direct2drive"),
+    ForCheckBox(str: "DLGamer", showvalue: true, store: "dlgamer"),
+    ForCheckBox(str: "Dreamgame", showvalue: true, store: "dreamgame"),
+    ForCheckBox(str: "Epic Game Store", showvalue: true, store: "epic"),
+    ForCheckBox(str: "eTail.Market", showvalue: true, store: "etailmarket"),
+    ForCheckBox(str: "Fanatical", showvalue: true, store: "bundlestars"),
+    ForCheckBox(str: "FireFlower", showvalue: true, store: "fireflower"),
+    ForCheckBox(str: "Game Jolt", showvalue: true, store: "gamejolt"),
+    ForCheckBox(str: "GameBillet", showvalue: true, store: "gamebillet"),
+    ForCheckBox(str: "GamersGate", showvalue: true, store: "gamersgate"),
+    ForCheckBox(str: "Gamesload", showvalue: true, store: "gamesload"),
+    ForCheckBox(str: "GamesPlanet DE", showvalue: true, store: "gamesplanetde"),
+    ForCheckBox(str: "GamesPlanet FR", showvalue: true, store: "gamesplanetfr"),
+    ForCheckBox(str: "GamesPlanet UK", showvalue: true, store: "gamesplanet"),
+    ForCheckBox(str: "GamesPlanet US", showvalue: true, store: "gamesplanetus"),
+    ForCheckBox(str: "GamesRepublic", showvalue: true, store: "gamesrepublic"),
+    ForCheckBox(str: "GameStop PC", showvalue: true, store: "impulse"),
+    ForCheckBox(str: "GOG", showvalue: true, store: "gog"),
+    ForCheckBox(str: "GreenManGaming", showvalue: true, store: "greenmangaming"),
+    ForCheckBox(str: "Humble Store", showvalue: true, store: "humblestore"),
+    ForCheckBox(str: "Humble Widgets", showvalue: true, store: "humblewidgets"),
+    ForCheckBox(str: "IndieGala Store", showvalue: true, store: "indiegalastore"),
+    ForCheckBox(str: "Itch.io", showvalue: true, store: "itchio"),
+    ForCheckBox(str: "JoyBuggy", showvalue: true, store: "joybuggy"),
+    ForCheckBox(str: "MacGamesStore", showvalue: true, store: "macgamestore"),
+    ForCheckBox(str: "Microsoft Store", showvalue: true, store: "microsoft"),
+    ForCheckBox(str: "Newegg", showvalue: true, store: "newegg"),
+    ForCheckBox(str: "Noctre", showvalue: true, store: "noctre"),
+    ForCheckBox(str: "Nuuvem", showvalue: true, store: "nuuvem"),
+    ForCheckBox(str: "Origin", showvalue: true, store: "origin"),
+    ForCheckBox(str: "Square Enix", showvalue: true, store: "squenix"),
+    ForCheckBox(str: "Steam", showvalue: true, store: "steam"),
+    ForCheckBox(str: "Ubisoft Store", showvalue: true, store: "uplay"),
+    ForCheckBox(str: "Voidu", showvalue: true, store: "voidu"),
+    ForCheckBox(str: "WinGameStore", showvalue: true, store: "wingamestore"),
   ];
 
-  List<ForCheckBox> store = [];
-
-  final List<String> gameType1 = [
-    "DLC",
-    "Package",
-    "Early Access",
-    "Trading Cards",
-    "Achievements"
+  final List<ForCheckBox> gameType = [
+    ForCheckBox(str: "DLC", showvalue: true),
+    ForCheckBox(str: "Package", showvalue: true),
+    ForCheckBox(str: "Early Access", showvalue: true),
   ];
+  var Allstore = ForCheckBox(str: "All", showvalue: true);
+  var AllgameType = ForCheckBox(str: "All", showvalue: true);
 
-  List<ForCheckBox> gameType = [];
-  var minMax = ForCheckBox(str: [0,999], showvalue: false);
-  var priceCut = ForCheckBox(str: [0,100], showvalue: false);
+  List<Widget> bodyCards = [];
+
+  var minMax = ForCheckBox(str: [0, 999], showvalue: false);
+  var priceCut = ForCheckBox(str: [0, 100], showvalue: false);
   var freeGames = ForCheckBox(str: "Free Games", showvalue: false);
+
   @override
   void initState() {
-    this.store = List<ForCheckBox>.generate(store1.length, (index) => ForCheckBox(str: store1[index], showvalue: false));
-    this.gameType = List<ForCheckBox>.generate(gameType1.length, (index) => ForCheckBox(str: gameType1[index], showvalue: false));
+    queryBuilder();
     super.initState();
   }
 
-  Widget getTile(ForCheckBox obj) {
-    return ListTile(
-      contentPadding: const EdgeInsets.fromLTRB(15, 0, 4, 0),
-      leading: Text(
+  void queryBuilder() async {
+    var api_key = "d7a507d40b74fd5e8fa636feca3b145fdc9bd7e2";
+    var serviceurl = "https://api.isthereanydeal.com/v01/deals/list/?key=";
+    var offset = 0;
+    var limit = 20;
+    var region = "";
+    var country = "";
+    List<String> shop = [];
+    for (var i in store){
+      if (i.showvalue == true){
+        shop.add(i.store);
+      }
+    }
+
+    var sort = "cut:desc";
+    bodyCards = await  GetTheData.getTheData("$serviceurl$api_key&offset=$offset&limit=$limit&region=$region&country=$country&shops=${shop.join("%2C")}&sort=$sort",
+        gameType[0].showvalue,
+        gameType[1].showvalue,
+        gameType[2].showvalue
+    );
+    setState(() {
+    });
+  }
+
+  Widget getAllTile(ForCheckBox obj, List<ForCheckBox> listRef) {
+    return CheckboxListTile(
+      contentPadding: const EdgeInsets.fromLTRB(15, 0, 8, 0),
+      title: Text(
         obj.str,
         style: const TextStyle(
           fontSize: 18,
         ),
       ),
-      trailing: Checkbox(
-        value: obj.showvalue,
-        onChanged: (value) {
-          setState(() {
-            obj.showvalue = value!;
-        });},
+      value: obj.showvalue,
+      onChanged: (value) {
+        setState(() {
+          obj.showvalue = value!;
+          for (var value1 in listRef) {
+            value1.showvalue = value;
+          }
+        });
+      },
+    );
+  }
+
+  Widget getTile(ForCheckBox obj, ForCheckBox allRef) {
+    return CheckboxListTile(
+      contentPadding: const EdgeInsets.fromLTRB(15, 0, 8, 0),
+      title: Text(
+        obj.str,
+        style: const TextStyle(
+          fontSize: 18,
+        ),
       ),
-      onTap: () {},
+      value: obj.showvalue,
+      onChanged: (value) {
+        setState(() {
+          if (allRef.showvalue == true) {
+            allRef.showvalue = false;
+          }
+          obj.showvalue = value!;
+        });
+      },
     );
   }
 
@@ -141,7 +186,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 },
               ),
-              onTap: () {},
+              onTap: () {
+                setState(() {
+                  freeGames.showvalue = !freeGames.showvalue;
+                });
+              },
             ),
             ListTile(
               leading: const Text(
@@ -153,14 +202,16 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {},
             ),
             ExpansionTile(
-              title: const Text(
-                "Store",
-                style: TextStyle(
-                  fontSize: 22,
+                title: const Text(
+                  "Store",
+                  style: TextStyle(
+                    fontSize: 22,
+                  ),
                 ),
-              ),
-              children: store.map((obj) => getTile(obj)).toList(),
-            ),
+                children: [
+                  getAllTile(Allstore, store),
+                  ...store.map((obj) => getTile(obj, Allstore)).toList(),
+                ]),
             ExpansionTile(
               title: const Text(
                 "Price",
@@ -172,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 0, 4, 0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const SizedBox(
                         width: 80,
@@ -199,13 +250,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                       ),
-                    Checkbox(
-                      value: minMax.showvalue,
-                      onChanged: (value) {
-                        setState(() {
-                          minMax.showvalue = value!;
-                        });},
-                    ),
+                      Checkbox(
+                        value: minMax.showvalue,
+                        onChanged: (value) {
+                          setState(() {
+                            minMax.showvalue = value!;
+                          });
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -254,7 +306,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         onChanged: (value) {
                           setState(() {
                             priceCut.showvalue = value!;
-                          });},
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -262,14 +315,16 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             ExpansionTile(
-              title: const Text(
-                "Game Type",
-                style: TextStyle(
-                  fontSize: 22,
+                title: const Text(
+                  "Game Type",
+                  style: TextStyle(
+                    fontSize: 22,
+                  ),
                 ),
-              ),
-              children: gameType.map((obj) => getTile(obj)).toList(),
-            ),
+                children: [
+                  getAllTile(AllgameType, gameType),
+                  ...gameType.map((obj) => getTile(obj, AllgameType)).toList(),
+                ]),
             Card(
               child: ListTile(
                 title: const Center(
@@ -280,155 +335,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ),
-                onTap: () {},
+                onTap: queryBuilder,
               ),
             ),
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(flex:2,child: Image.asset("assets/848450.jpg"),),
-                    const SizedBox(width: 6,),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+      body: ListView(
+        children: [
+          ...bodyCards,
 
-                          Row(
-                            children: const [Expanded(
-                              child: Text("Subnautica: Below Zero",
-                                  overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontSize: 18,),
-                              ),
-                            ),],
-                          ),
-                          Row(
-                            children:[
-                              Expanded(flex: 5,child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                Container(
-                                  padding: const EdgeInsets.all(1),
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[600],
-                                  ),
-                                  child: const Center(child: Text("-10%")),
-                                ),
-                                  const SizedBox(height: 3,),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(1),
-
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[600],
-                                        ),
-                                        child: const Center(child: Text("dlc")),
-                                      ),
-                                      const SizedBox(width: 3,),
-                                      Container(
-                                        padding: const EdgeInsets.all(1),
-
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[600],
-                                        ),
-                                        child: const Center(child: Text("Steam")),
-                                      ),
-                                    ],
-                                  )
-                              ],)),
-                              Expanded(
-                                flex: 2,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: const [
-                                  Text("\$40.9",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      decoration: TextDecoration.lineThrough,
-                                      decorationThickness: 1.5,
-                                    ),),
-                                  SizedBox(height: 5,),
-                                  Text("\$40.9",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),),
-                                ],),
-                              ),
-
-                            ],
-                          ),
-
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 80,
-              height: 50,
-              child: TextField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  hintText: "min",
-                  filled: true,
-                ),
-              ),
-            ),
-            const Text("Hiiiii"),
-            Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                color: Colors.red,
-                width: 2,
-              )),
-              child: Image.asset("assets/848450.jpg"),
-            ),
-            const Text(
-              'Choose your theme:',
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                /// //////////////////////////////////////////////////////
-                /// Change theme & rebuild to show it using these buttons
-                ElevatedButton(
-                    onPressed: () =>
-                        MyApp.of(context).changeTheme(ThemeMode.light),
-                    child: const Text('Light')),
-                ElevatedButton(
-                    onPressed: () =>
-                        MyApp.of(context).changeTheme(ThemeMode.dark),
-                    child: const Text('Dark')),
-                ElevatedButton(
-                    onPressed: () =>
-                        MyApp.of(context).changeTheme(ThemeMode.system),
-                    child: const Text('System')),
-
-                /// //////////////////////////////////////////////////////
-              ],
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }

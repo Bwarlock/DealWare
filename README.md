@@ -1,6 +1,7 @@
 # Dealware
 
-An Unofficial Flutter App on "is There Any Deal" API 
+An Unofficial Flutter App on "is There Any Deal" API
+
 Moving ON
 
 ## Getting Started

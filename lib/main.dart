@@ -1,6 +1,7 @@
 import 'package:dealware/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:dealware/home.dart';
+import 'package:dealware/search.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,6 +22,12 @@ class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.system;
 
   @override
+  void initState() {
+    super.initState();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter App',
@@ -30,7 +37,8 @@ class _MyAppState extends State<MyApp> {
       initialRoute: "/home",
       routes: {
         "/home" : (context) => MyHomePage(title: 'Dealware'),
-        "/settings" : (context) => Settings(),
+        "/settings" : (context) => Settings(title: 'Settings'),
+        "/search" : (context) => SearchList(title: 'Search Game'),
       },
       /*home: const MyHomePage(title: 'Dealware'),*/
     );

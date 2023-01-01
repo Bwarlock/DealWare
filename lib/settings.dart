@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:dealware/main.dart';
 
 class Settings extends StatefulWidget {
-  const Settings({Key? key}) : super(key: key);
+  const Settings({Key? key, required this.title});
 
+  final String title;
   @override
   State<Settings> createState() => _SettingsState();
 }
@@ -13,7 +14,7 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Settings"),
+        title: Text(widget.title),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

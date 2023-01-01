@@ -6,8 +6,11 @@ class GetTheJson {
     try {
       var url = Uri.parse(INurl);
       Response res = await get(url);
-      Map data = jsonDecode(res.body);
-      return data;
+      if(res.statusCode == 200){
+        Map data = jsonDecode(res.body);
+        return data;
+      }
+      return {};
     } catch (e, stacktrace) {
       print(e);
       print(stacktrace);
